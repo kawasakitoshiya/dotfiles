@@ -1,4 +1,3 @@
-
 export LANG=ja_JP.UTF-8
 
 # Path to your oh-my-zsh configuration.
@@ -143,7 +142,6 @@ export ANSIBLE_COW_SELECTION=random
 export CFLAGS=-Qunused-arguments
 export CPPFLAGS=-Qunused-arguments
 
-
 # setting for peco
 for f (~/.zsh/peco-sources/*) source "${f}" # load peco sources
 bindkey '^r' peco-select-history
@@ -155,3 +153,17 @@ export PATH=$HOME/.go/bin:$PATH
 
 export GISTY_ACCESS_TOKEN=c632351081a6cd2fcc14ff14be320deb52b972e8
 export GISTY_DIR=$HOME/gists
+
+function peco-select-gitadd() {
+    local selected_file_to_add=$(git status --porcelain | \
+                                                            peco --query "$LBUFFER" | \
+                                                            awk -F ' ' '{print $NF}')
+    if [ -n "$selected_file_to_add" ]; then
+        BUFFER="git add ${selected_file_to_add}"
+        CURSOR=$#BUFFER
+        zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-select-gitadd
+bindkey "^g^a" peco-select-gitadd
