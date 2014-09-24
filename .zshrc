@@ -167,3 +167,20 @@ function peco-select-gitadd() {
 }
 zle -N peco-select-gitadd
 bindkey "^g^a" peco-select-gitadd
+
+function peco-select-git-branch-delete() {
+    local selected_branch_to_delete=$(git branch | \
+                                                     peco --query "$LBUFFER" | \
+                                                     awk -F ' ' '{print $NF}')
+    if [ -n "$selected_branch_to_delete" ]; then
+        BUFFER="git branch -d ${selected_branch_to_delete}"
+        CURSOR=$#BUFFER
+        zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-select-git-branch-delete
+bindkey "^g^b^b" peco-select-git-branch-delete
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
