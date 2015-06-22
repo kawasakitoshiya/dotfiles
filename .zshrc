@@ -55,6 +55,8 @@ export PATH=/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:$PATH
 
 #alias for applications
 alias chrome="open -a Google\ Chrome"
+alias slack="open -a Slack"
+alias sl="slack"
 alias coda="open -a Coda\ 2"
 alias xcode="open -a Xcode "
 alias finder="open -a Finder"
@@ -75,12 +77,16 @@ alias sl="ls"
 alias g="git"
 alias sss='python ~/workspace/pysacloud/show_server.py -t'
 
-alias d="dillo"
-
 
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
 export PYTHONSTARTUP=~/.pythonstartup
 export PYTHONDONTWRITEBYTECODE=1
+
+# pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+pyenv virtualenvwrapper
+workon default
 
 # doxygen path
 export PATH=/Applications/Doxygen.app/Contents/Resources:$PATH
@@ -89,16 +95,6 @@ export PATH=/Applications/Doxygen.app/Contents/Resources:$PATH
 ##########
  . `brew --prefix`/etc/profile.d/z.sh
 
-###########
-## virtualenvwrapper
-##########
-. /usr/local/bin/virtualenvwrapper.sh
-
-#########
-## make default env "default"
-########
-workon default
-eval "$(rbenv init -)"
 
 ###################
 # ssh-terminal
@@ -143,9 +139,9 @@ export CFLAGS=-Qunused-arguments
 export CPPFLAGS=-Qunused-arguments
 
 # setting for peco
-for f (~/.zsh/peco-sources/*) source "${f}" # load peco sources
-bindkey '^r' peco-select-history
-bindkey '^@' peco-cdr
+#for f (~/.zsh/peco-sources/*) source "${f}" # load peco sources
+#bindkey '^r' peco-select-history
+#bindkey '^@' peco-cdr
 
 
 export GOPATH=~/.go
@@ -182,5 +178,41 @@ function peco-select-git-branch-delete() {
 zle -N peco-select-git-branch-delete
 bindkey "^g^b^b" peco-select-git-branch-delete
 
+function peco-select-history() {
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    BUFFER=$(\history -n 1 |\
+        eval $tac | \
+        peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle clear-screen
+}
+zle -N peco-select-history
+bindkey '^r' peco-select-history
+
+function peco-select-ssh() {
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    BUFFER=$(\history -n 1 | grep 'ssh ' | sort | uniq |\
+        eval $tac | \
+        peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle clear-screen
+}
+zle -N peco-select-ssh
+bindkey '^s' peco-select-ssh
+
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
+
+
+export PATH=$PATH:/Users/kawasakitoshiya/.nodebrew/current/bin
