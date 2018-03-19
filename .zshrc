@@ -78,15 +78,15 @@ alias g="git"
 alias sss='python ~/workspace/pysacloud/show_server.py -t'
 
 
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
-export PYTHONSTARTUP=~/.pythonstartup
-export PYTHONDONTWRITEBYTECODE=1
+#export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
+#export PYTHONSTARTUP=~/.pythonstartup
+#export PYTHONDONTWRITEBYTECODE=1
 
 # pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 pyenv virtualenvwrapper
-workon default
+#workon default
 
 # doxygen path
 export PATH=/Applications/Doxygen.app/Contents/Resources:$PATH
@@ -125,7 +125,7 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 #     fi
 
 # }
-alias emd="/usr/local/bin/emacs --daemon"
+alias emd="\emacs --daemon"
 alias emc="emacsclient"
 alias ekill="emacsclient -e '(progn (defun yes-or-no-p (p) t) (kill-emacs))'"
 alias emacs_="/usr/local/bin/emacs"
@@ -216,3 +216,27 @@ export LIBRARY_PATH=/usr/local/lib:$LIBRARY_PATH
 
 
 export PATH=$PATH:/Users/kawasakitoshiya/.nodebrew/current/bin
+export PATH="$HOME/.rbenv/bin:$PATH"
+
+# The next line enables shell command completion for gcloud.
+export PATH=$HOME/.nodebrew/current/bin:$PATH
+export LANG=en_US
+
+alias git=hub
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+source $HOME/.cargo/env
+
+export PYTHONDONTWRITEBYTECODE=1
+
+export PATH=$HOME/.pyenv/bin:$PATH
+alias gt='git'
+alias igt='git'
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
